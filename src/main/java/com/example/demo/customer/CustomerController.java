@@ -28,25 +28,26 @@ public class CustomerController {
 	@Autowired
 	CustomerRepository customerRepository;
 
-    private static List<CustomerDTO> CUSTOMERS =  new ArrayList<CustomerDTO>();
+
 
     
     @GetMapping
     //@PreAuthorize("hasAnyRole('ROLE_CUSTOMER','ROLE_ADMIN')")
     @Secured({ "ROLE_CUSTOMER", "ROLE_ADMIN" })
     public List<CustomerDTO> getCUstomers(){
-    	return CUSTOMERS;
+    	return 
+    			customerRepository.findAll()
+    			.stream()
+    			.map(customer -> new CustomerDTO(customer.getId(), customer.getName()))
+    			.collect(Collectors.toList());
     }
     
     @GetMapping(path = "{customerId}")
     @PreAuthorize("hasAnyRole('CUSTOMER','ADMIN')")
     public CustomerDTO getStudent(@PathVariable("customerId") Integer customerId) {
-        return CUSTOMERS.stream()
-                .filter(customer -> customerId.equals(customer.getCustomerId()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException(
-                        "Student " + customerId + " does not exists"
-                ));
+        return customerRepository.findById(customerId)
+        		.map(customer -> new CustomerDTO(customer.getId(), customer.getName()))
+        		.get();
     }
     
     
@@ -59,7 +60,6 @@ public class CustomerController {
     	customer.setName(customerDTO.getCustomerName());
     	customer = customerRepository.save(customer);
     	customerDTO.setCustomerId(customer.getId());
-    	CUSTOMERS.add( customerDTO );
     	System.out.println("Customer has been added "+customer.getId());
     }
     
@@ -67,7 +67,7 @@ public class CustomerController {
     @DeleteMapping(path = "{customerId}")
     @PreAuthorize("hasAuthority('customer:write')")
     public void deleteCustomer(@PathVariable("customerId") Integer customerId) {
-    	CUSTOMERS = CUSTOMERS.stream().filter(customer -> !(customer.getCustomerId().equals(customerId))).collect(Collectors.toList());
+    	customerRepository.deleteById(customerId);
     	System.out.println("Customer deleted for customer id :"+customerId);
     }
 }
