@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.BaelUser;
+import com.example.demo.entity.AppUser;
 import com.example.demo.reposiroty.ApplicationUserRespository;
 
 
@@ -37,7 +37,7 @@ public class ApplicationUserDetailService implements UserDetailsService {
 	
 	private UserDetails getApplicationUser(String userName) {
 
-		BaelUser user = applicationUserRespository.findAllByUsername(userName);
+		AppUser user = applicationUserRespository.findAllByUsername(userName);
 		ApplicationUserDetails applicationUserDetails = null;
 		
 		try {
@@ -58,7 +58,7 @@ public class ApplicationUserDetailService implements UserDetailsService {
 		return applicationUserDetails;
 	}
 
-	private Set<? extends GrantedAuthority> getAuthorities(BaelUser user) {
+	private Set<? extends GrantedAuthority> getAuthorities(AppUser user) {
 		return  user.getAuthorities()
 				.stream()
 				.map(authority->new SimpleGrantedAuthority(authority.getAuthority()))

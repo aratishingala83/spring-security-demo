@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name="bael_users")
 @NamedQuery(name="BaelUser.findAll", query="SELECT b FROM BaelUser b")
-public class BaelUser implements Serializable {
+public class AppUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -31,7 +31,7 @@ public class BaelUser implements Serializable {
 	@OneToMany(mappedBy="baelUser", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	private List<Authority> authorities;
 
-	public BaelUser() {
+	public AppUser() {
 	}
 
 	public String getUsername() {

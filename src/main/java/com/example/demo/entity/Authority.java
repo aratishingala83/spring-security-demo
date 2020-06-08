@@ -19,7 +19,7 @@ public class Authority implements Serializable {
 	//bi-directional many-to-one association to BaelUser
 	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="username")
-	private BaelUser baelUser;
+	private AppUser baelUser;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,11 +37,11 @@ public class Authority implements Serializable {
 		this.authority = authority;
 	}
 
-	public BaelUser getBaelUser() {
+	public AppUser getBaelUser() {
 		return this.baelUser;
 	}
 
-	public void setBaelUser(BaelUser baelUser) {
+	public void setBaelUser(AppUser baelUser) {
 		this.baelUser = baelUser;
 	}
 
