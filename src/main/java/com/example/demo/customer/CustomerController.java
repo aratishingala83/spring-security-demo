@@ -1,12 +1,12 @@
 package com.example.demo.customer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,12 +27,11 @@ public class CustomerController {
 	
 	@Autowired
 	CustomerRepository customerRepository;
-
-
-
+	
+	
     
     @GetMapping
-    //@PreAuthorize("hasAnyRole('ROLE_CUSTOMER','ROLE_ADMIN')")
+    //@PreAuthorize("hasAnyRole('ROLE_CUSTOMER','ROLE_ADMIN')") :: We can use @Secure as well ; see below line
     @Secured({ "ROLE_CUSTOMER", "ROLE_ADMIN" })
     public List<CustomerDTO> getCUstomers(){
     	return 
