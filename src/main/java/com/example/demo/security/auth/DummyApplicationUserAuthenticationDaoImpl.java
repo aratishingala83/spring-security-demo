@@ -107,37 +107,32 @@ public class RestClient {
             String cookieStr = header.getValue();
             String[] parts = cookieStr.split(";\\s*");
 
-            // Parse cookie name and value
-            String[] nameValue = parts[0].split("=", 2);
-            String name = nameValue[0];
-            String value = nameValue[1];
-
-            // Create BasicClientCookie and add to cookie store
-            BasicClientCookie cookie = new BasicClientCookie(name, value);
-            for (int i = 1; i < parts.length; i++) {
-                String[] attribute = parts[i].split("=", 2);
+            // Iterate over cookie attributes to find JSESSIONID and iSession
+            String name = null;
+            String value = null;
+            for (String part : parts) {
+                String[] attribute = part.split("=", 2);
                 String attributeName = attribute[0].trim();
                 String attributeValue = attribute.length > 1 ? attribute[1].trim() : null;
                 if (attributeValue != null) {
-                    switch (attributeName) {
-                        // Handle other cookie attributes as needed
-                        case "Expires":
-                            cookie.setExpiryDate(org.apache.http.client.utils.DateUtils.parseDate(attributeValue));
-                            break;
-                        case "Path":
-                            cookie.setPath(attributeValue);
-                            break;
-                        case "Domain":
-                            cookie.setDomain(attributeValue);
-                            break;
-                        // Add additional cases as needed
+                    if ("ABC".equals(attributeName) || "OOO".equals(attributeName)) {
+                        name = attributeName;
+                        value = attributeValue;
+                        break;
                     }
                 }
             }
-            cookieStore.addCookie(cookie);
+
+            // If ABC or OOO found, create BasicClientCookie and add to cookie store
+            if (name != null && value != null) {
+                BasicClientCookie cookie = new BasicClientCookie(name, value);
+                // Set additional cookie attributes as needed
+                cookieStore.addCookie(cookie);
+            }
         }
     }
 }
+
 **/
 
 }
